@@ -86,8 +86,6 @@ section{padding:6rem 1.5rem}
 .feat-status{margin-top:1rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px}
 .s-live{color:var(--emerald)}
 .s-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--emerald);display:inline-block}
-.s-soon{color:var(--amber)}
-.s-soon::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--amber);display:inline-block}
 
 .how-section{background:var(--bg1)}
 .how-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:3.5rem;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border)}
@@ -107,24 +105,6 @@ section{padding:6rem 1.5rem}
 .case-msg span{color:var(--text3)}
 .case-reply{background:var(--accent);border-radius:10px;padding:0.75rem 1rem;font-size:0.8rem;color:#fff;font-weight:300;line-height:1.55}
 .case-reply b{font-weight:600}
-
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:3.5rem}
-.plan{background:var(--bg1);border:1px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column}
-.plan.featured{border-color:var(--accent);position:relative}
-.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:0.65rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;background:var(--accent);color:#fff;padding:0.25rem 0.85rem;border-radius:100px;white-space:nowrap}
-.plan-name{font-size:0.8rem;font-weight:500;color:var(--text2);font-family:var(--mono);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.75rem}
-.plan-price{font-family:var(--serif);font-size:2.75rem;font-weight:400;letter-spacing:-0.03em;color:var(--text);line-height:1;margin-bottom:0.35rem}
-.plan-price span{font-size:1.1rem;vertical-align:super;font-family:var(--sans);font-weight:300}
-.plan-cycle{font-size:0.78rem;color:var(--text3);font-weight:300;margin-bottom:1.5rem}
-.plan-feats{list-style:none;display:flex;flex-direction:column;gap:0.7rem;flex:1}
-.plan-feats li{font-size:0.85rem;color:var(--text2);font-weight:300;display:flex;align-items:flex-start;gap:0.6rem}
-.plan-feats li::before{content:'✓';color:var(--emerald);font-weight:600;flex-shrink:0;font-size:0.8rem}
-.plan-feats li.dim{color:var(--text3)}
-.plan-feats li.dim::before{content:'·';color:var(--text3)}
-.plan-cta{margin-top:2rem;font-family:var(--mono);font-size:0.78rem;font-weight:500;padding:0.75rem;text-align:center;border-radius:9px;border:1px solid var(--border2);cursor:pointer;text-decoration:none;color:var(--text2);background:transparent;transition:border-color 0.2s,color 0.2s;display:block}
-.plan-cta:hover{border-color:var(--border3);color:var(--text)}
-.plan.featured .plan-cta{background:var(--accent);border-color:var(--accent);color:#fff}
-.plan.featured .plan-cta:hover{opacity:0.88}
 
 .final-cta{text-align:center;padding:8rem 1.5rem;position:relative;overflow:hidden;border-top:1px solid var(--border)}
 .final-cta-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(99,102,241,0.1) 0%,transparent 65%)}
@@ -156,7 +136,6 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
   <div class="nav-right">
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How it works</a>
-    <a href="#pricing" class="nav-link">Pricing</a>
     <a href="https://t.me/aria_username_bot" class="nav-btn">Try for free →</a>
   </div>
 </nav>
@@ -200,7 +179,7 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
 </div>
 
 <div class="proof-bar">
-  <div class="proof-item"><span class="proof-num">6</span><span class="proof-label">AI-powered features</span></div>
+  <div class="proof-item"><span class="proof-num">5</span><span class="proof-label">AI-powered features</span></div>
   <div class="proof-div"></div>
   <div class="proof-item"><span class="proof-num">0</span><span class="proof-label">apps to install</span></div>
   <div class="proof-div"></div>
@@ -212,7 +191,7 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
 <section id="features">
   <div class="inner">
     <div class="sect-tag reveal">What ARIA can do</div>
-    <h2 class="sect-h reveal">Six ways ARIA takes<br/>work off your plate.</h2>
+    <h2 class="sect-h reveal">Five ways ARIA takes<br/>work off your plate.</h2>
     <p class="sect-sub reveal">Every feature works the same way — you say it, ARIA handles it.</p>
     <div class="feat-grid reveal">
       <div class="feat"><span class="feat-icon">💬</span><h3>Smart AI Chat</h3><p>Ask anything. ARIA understands context, answers questions, drafts text, and reasons through problems like a brilliant personal assistant.</p><div class="feat-status s-live">Live</div></div>
@@ -220,7 +199,6 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
       <div class="feat"><span class="feat-icon">📰</span><h3>Tech News Digest</h3><p>Curated tech headlines delivered every few hours — summarised by AI so you get the signal, not the noise.</p><div class="feat-status s-live">Live</div></div>
       <div class="feat"><span class="feat-icon">🌅</span><h3>Morning Briefing</h3><p>Wake up to a personalised daily summary — your spending, pending tasks, key reminders, and top news, all in one message.</p><div class="feat-status s-live">Live</div></div>
       <div class="feat"><span class="feat-icon">💼</span><h3>Job Application Tracker</h3><p>Log every application instantly. ARIA tracks status and automatically reminds you when it's time to follow up — no opportunity slips through.</p><div class="feat-status s-live">Live</div></div>
-      <div class="feat"><span class="feat-icon">📺</span><h3>YouTube Summariser</h3><p>Drop any YouTube link and get a structured summary with key takeaways — saved to your personal learning library forever.</p><div class="feat-status s-soon">Coming soon</div></div>
     </div>
   </div>
 </section>
@@ -247,60 +225,7 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
       <div class="case-card"><div class="case-label">Expense tracking</div><div class="case-msg"><span>You:</span> paid ₹1,200 for electricity bill</div><div class="case-reply">✓ <b>₹1,200 · Utilities</b> logged. Monthly bills total <b>₹3,450</b> so far.</div></div>
       <div class="case-card"><div class="case-label">Job applications</div><div class="case-msg"><span>You:</span> applied to Atlassian SDE-2 today</div><div class="case-reply">📌 Tracked. I'll remind you to follow up with <b>Atlassian</b> on <b>May 10th</b>.</div></div>
       <div class="case-card"><div class="case-label">Morning briefing</div><div class="case-msg"><span>You:</span> give me today's briefing</div><div class="case-reply">☀️ <b>3 follow-ups due today.</b> Spent <b>₹8,200</b> this week. Top story: OpenAI announces GPT-5...</div></div>
-      <div class="case-card"><div class="case-label">YouTube summariser</div><div class="case-msg"><span>You:</span> youtube.com/watch?v=abc123</div><div class="case-reply">📚 Summary saved to your <b>Learning Library.</b> Key takeaway: system design patterns for scale...</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="pricing" style="background:var(--bg1)">
-  <div class="inner">
-    <div class="sect-tag reveal">Pricing</div>
-    <h2 class="sect-h reveal">Start free.<br/>Upgrade when you're ready.</h2>
-    <p class="sect-sub reveal">No credit card needed. Free plan is genuinely useful, forever.</p>
-    <div class="pricing-grid reveal">
-      <div class="plan">
-        <div class="plan-name">Free</div>
-        <div class="plan-price"><span></span>₹0</div>
-        <div class="plan-cycle">forever</div>
-        <ul class="plan-feats">
-          <li>AI chat assistant</li>
-          <li>Expense tracking</li>
-          <li>Job application tracker</li>
-          <li>Daily morning briefing</li>
-          <li class="dim">News digest (limited)</li>
-          <li class="dim">YouTube summariser</li>
-        </ul>
-        <a href="https://t.me/aria_username_bot" class="plan-cta">Get started →</a>
-      </div>
-      <div class="plan featured">
-        <div class="plan-badge">Most popular</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-price"><span>₹</span>299</div>
-        <div class="plan-cycle">per month</div>
-        <ul class="plan-feats">
-          <li>Everything in Free</li>
-          <li>Unlimited AI messages</li>
-          <li>Real-time news digest</li>
-          <li>YouTube summariser (unlimited)</li>
-          <li>Spending analytics & insights</li>
-          <li>Priority response speed</li>
-        </ul>
-        <a href="https://t.me/aria_username_bot" class="plan-cta">Start free trial →</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Team</div>
-        <div class="plan-price"><span>₹</span>799</div>
-        <div class="plan-cycle">per month · up to 5 users</div>
-        <ul class="plan-feats">
-          <li>Everything in Pro</li>
-          <li>Shared team workspace</li>
-          <li>Team expense reports</li>
-          <li>Admin dashboard</li>
-          <li>Priority support</li>
-          <li>Early access to new features</li>
-        </ul>
-        <a href="mailto:hello@aria.ai" class="plan-cta">Contact us →</a>
-      </div>
+      <div class="case-card"><div class="case-label">AI chat</div><div class="case-msg"><span>You:</span> draft a follow-up email for my Stripe interview</div><div class="case-reply">✉️ Here's a professional follow-up email for your <b>Stripe SDE-2</b> interview. Want me to tweak the tone?</div></div>
     </div>
   </div>
 </section>
@@ -308,7 +233,7 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
 <section class="final-cta">
   <div class="final-cta-bg"></div>
   <h2>Stop managing things.<br/><em>Let ARIA manage them.</em></h2>
-  <p>Join people who've offloaded the mental overhead of daily life to their AI assistant.</p>
+  <p>Your AI assistant is already on Telegram, waiting. Free, forever.</p>
   <a href="https://t.me/aria_username_bot" class="btn-p">Start for free on Telegram →</a>
 </section>
 
@@ -317,7 +242,6 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
   <ul class="footer-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#how">How it works</a></li>
-    <li><a href="#pricing">Pricing</a></li>
     <li><a href="mailto:hello@aria.ai">Contact</a></li>
     <li><a href="#">Privacy</a></li>
   </ul>
