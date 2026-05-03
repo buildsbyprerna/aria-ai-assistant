@@ -5,157 +5,379 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ARIA — Your AI Life Assistant</title>
 <meta name="description" content="ARIA is a personal AI assistant that lives in Telegram. Track expenses, manage job applications, get morning briefings and more — just by chatting."/>
+<meta property="og:title" content="ARIA — Your AI Life Assistant"/>
+<meta property="og:description" content="Track expenses, manage job applications, stay briefed every morning — all by just sending a message."/>
+<meta name="theme-color" content="#06060a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
+/* ─── Reset & Base ───────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+
 :root{
   --bg:#06060a;--bg1:#0d0d14;--bg2:#12121b;--surface:#181824;--surface2:#1e1e2e;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.18);
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.22);
   --accent:#6366f1;--accent-light:#818cf8;--accent-glow:rgba(99,102,241,0.18);
   --emerald:#10b981;--rose:#f43f5e;--amber:#f59e0b;
   --text:#eeeef5;--text2:#9898b8;--text3:#55556a;
   --serif:'Instrument Serif',Georgia,serif;--sans:'Geist',sans-serif;--mono:'Geist Mono',monospace;
+  --nav-h:60px;
+  --r-sm:0.5rem;--r-md:0.875rem;--r-lg:1.25rem;--r-xl:1.5rem;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(6,6,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-mark{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.68rem;font-weight:500;color:#fff}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden;min-width:320px}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ─── Nav ────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,2.5rem);height:var(--nav-h);
+  background:rgba(6,6,10,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border)
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-mark{
+  width:30px;height:30px;background:var(--accent);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:0.68rem;font-weight:500;color:#fff;flex-shrink:0
+}
 .nav-logo-text{font-size:0.95rem;font-weight:600;color:var(--text);letter-spacing:-0.01em}
-.nav-right{display:flex;align-items:center;gap:1.25rem}
-.nav-link{font-size:0.825rem;color:var(--text2);text-decoration:none;transition:color 0.2s}
+.nav-right{display:flex;align-items:center;gap:clamp(0.75rem,2vw,1.25rem)}
+.nav-link{font-size:0.825rem;color:var(--text2);text-decoration:none;transition:color 0.2s;white-space:nowrap}
 .nav-link:hover{color:var(--text)}
-.nav-btn{font-family:var(--mono);font-size:0.75rem;font-weight:500;padding:0.45rem 1.1rem;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;text-decoration:none;letter-spacing:0.02em;transition:opacity 0.2s,transform 0.15s}
+/* hide nav links on very small screens */
+@media(max-width:480px){.nav-link{display:none}}
+.nav-btn{
+  font-family:var(--mono);font-size:0.75rem;font-weight:500;
+  padding:0.45rem clamp(0.75rem,2vw,1.1rem);
+  background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;
+  text-decoration:none;letter-spacing:0.02em;white-space:nowrap;
+  transition:opacity 0.2s,transform 0.15s
+}
 .nav-btn:hover{opacity:0.85;transform:translateY(-1px)}
 
-.hero{min-height:100vh;display:grid;place-items:center;padding:7rem 1.5rem 5rem;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,0.13) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(16,185,129,0.06) 0%,transparent 55%)}
-.hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%)}
-.hero-content{position:relative;text-align:center;max-width:780px;display:flex;flex-direction:column;align-items:center}
-.hero-eyebrow{font-family:var(--mono);font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-light);display:flex;align-items:center;gap:0.5rem;margin-bottom:1.75rem;animation:fadeUp 0.6s 0.1s both}
-.eyebrow-dot{width:6px;height:6px;background:var(--emerald);border-radius:50%;animation:blink 2.5s infinite}
+/* ─── Hero ───────────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:grid;place-items:center;
+  padding:calc(var(--nav-h) + clamp(2.5rem,6vw,5rem)) clamp(1rem,4vw,1.5rem) clamp(3rem,6vw,5rem);
+  position:relative;overflow:hidden
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%,rgba(99,102,241,0.13) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 70%,rgba(16,185,129,0.06) 0%,transparent 55%)
+}
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:clamp(40px,8vw,64px) clamp(40px,8vw,64px);
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%)
+}
+.hero-content{position:relative;text-align:center;max-width:780px;display:flex;flex-direction:column;align-items:center;width:100%}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:clamp(0.62rem,1.5vw,0.72rem);font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-light);
+  display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;animation:fadeUp 0.6s 0.1s both
+}
+.eyebrow-dot{width:6px;height:6px;background:var(--emerald);border-radius:50%;flex-shrink:0;animation:blink 2.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero-h1{font-family:var(--serif);font-size:clamp(3rem,6.5vw,5.75rem);font-weight:400;line-height:1.08;letter-spacing:-0.02em;color:var(--text);margin-bottom:1.75rem;animation:fadeUp 0.6s 0.18s both}
+.hero-h1{
+  font-family:var(--serif);
+  font-size:clamp(2.5rem,7.5vw,5.75rem);
+  font-weight:400;line-height:1.08;letter-spacing:-0.02em;color:var(--text);
+  margin-bottom:1.5rem;animation:fadeUp 0.6s 0.18s both
+}
 .hero-h1 em{font-style:italic;color:var(--accent-light)}
-.hero-p{font-size:1.1rem;font-weight:300;color:var(--text2);line-height:1.75;max-width:50ch;margin-bottom:2.5rem;animation:fadeUp 0.6s 0.28s both}
-.hero-actions{display:flex;gap:0.875rem;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.6s 0.38s both}
-.btn-p{font-family:var(--mono);font-size:0.82rem;font-weight:500;padding:0.8rem 1.75rem;background:var(--accent);color:#fff;border:none;border-radius:9px;cursor:pointer;text-decoration:none;letter-spacing:0.02em;transition:opacity 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 0 30px rgba(99,102,241,0.35)}
+.hero-p{
+  font-size:clamp(0.95rem,2vw,1.1rem);font-weight:300;color:var(--text2);
+  line-height:1.75;max-width:50ch;margin-bottom:2rem;animation:fadeUp 0.6s 0.28s both;
+  padding:0 0.5rem
+}
+.hero-actions{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.6s 0.38s both}
+.btn-p{
+  font-family:var(--mono);font-size:clamp(0.75rem,1.8vw,0.82rem);font-weight:500;
+  padding:0.8rem clamp(1.25rem,3vw,1.75rem);
+  background:var(--accent);color:#fff;border:none;border-radius:9px;cursor:pointer;
+  text-decoration:none;letter-spacing:0.02em;white-space:nowrap;
+  transition:opacity 0.2s,transform 0.15s,box-shadow 0.2s;
+  box-shadow:0 0 30px rgba(99,102,241,0.35)
+}
 .btn-p:hover{opacity:0.88;transform:translateY(-2px);box-shadow:0 4px 40px rgba(99,102,241,0.45)}
-.btn-s{font-family:var(--mono);font-size:0.82rem;font-weight:400;padding:0.8rem 1.75rem;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:9px;cursor:pointer;text-decoration:none;letter-spacing:0.02em;transition:border-color 0.2s,color 0.2s,transform 0.15s}
+.btn-s{
+  font-family:var(--mono);font-size:clamp(0.75rem,1.8vw,0.82rem);font-weight:400;
+  padding:0.8rem clamp(1.25rem,3vw,1.75rem);
+  background:transparent;color:var(--text2);border:1px solid var(--border2);
+  border-radius:9px;cursor:pointer;text-decoration:none;letter-spacing:0.02em;white-space:nowrap;
+  transition:border-color 0.2s,color 0.2s,transform 0.15s
+}
 .btn-s:hover{color:var(--text);border-color:var(--border3);transform:translateY(-2px)}
 
-.chat-wrap{position:relative;margin-top:4rem;width:100%;max-width:480px;animation:fadeUp 0.7s 0.5s both}
-.chat-glow{position:absolute;inset:-30px;background:radial-gradient(ellipse at 50% 50%,rgba(99,102,241,0.12) 0%,transparent 65%);pointer-events:none}
-.chat-window{position:relative;background:var(--bg1);border:1px solid var(--border2);border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.6)}
-.chat-topbar{display:flex;align-items:center;gap:9px;padding:0.85rem 1.1rem;background:var(--bg2);border-bottom:1px solid var(--border)}
-.chat-avatar{width:28px;height:28px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.6rem;font-weight:600;color:#fff}
-.chat-info{flex:1}
+/* ─── Chat Window ────────────────────────────────────────────── */
+.chat-wrap{
+  position:relative;margin-top:clamp(2.5rem,5vw,4rem);
+  width:100%;max-width:clamp(300px,90vw,480px);animation:fadeUp 0.7s 0.5s both
+}
+.chat-glow{
+  position:absolute;inset:-30px;
+  background:radial-gradient(ellipse at 50% 50%,rgba(99,102,241,0.12) 0%,transparent 65%);
+  pointer-events:none
+}
+.chat-window{
+  position:relative;background:var(--bg1);border:1px solid var(--border2);
+  border-radius:clamp(14px,3vw,20px);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.6)
+}
+.chat-topbar{
+  display:flex;align-items:center;gap:9px;padding:0.85rem 1.1rem;
+  background:var(--bg2);border-bottom:1px solid var(--border)
+}
+.chat-avatar{
+  width:28px;height:28px;border-radius:8px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:0.6rem;font-weight:600;color:#fff;flex-shrink:0
+}
+.chat-info{flex:1;min-width:0}
 .chat-info-name{font-size:0.8rem;font-weight:600;color:var(--text);line-height:1.2}
 .chat-info-sub{font-size:0.65rem;color:var(--emerald);font-family:var(--mono)}
-.chat-msgs{padding:1rem;display:flex;flex-direction:column;gap:0.6rem}
-.bubble{max-width:82%;padding:0.6rem 0.9rem;border-radius:14px;font-size:0.82rem;line-height:1.55;font-weight:300}
+.chat-msgs{padding:0.85rem;display:flex;flex-direction:column;gap:0.55rem}
+.bubble{
+  max-width:85%;padding:0.6rem 0.9rem;border-radius:14px;
+  font-size:clamp(0.75rem,1.8vw,0.82rem);line-height:1.55;font-weight:300
+}
 .bubble.u{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
 .bubble.a{align-self:flex-start;background:var(--surface);color:var(--text);border-bottom-left-radius:4px}
 .bubble.a b{color:var(--emerald);font-weight:500}
 .bubble.a .hi{color:var(--accent-light);font-weight:500}
-.chat-input-bar{display:flex;align-items:center;gap:8px;padding:0.65rem 0.85rem;border-top:1px solid var(--border);background:var(--bg2)}
-.chat-input-fake{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.75rem;font-size:0.75rem;color:var(--text3);font-family:var(--sans)}
-.chat-send{width:28px;height:28px;border-radius:7px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.chat-input-bar{
+  display:flex;align-items:center;gap:8px;padding:0.65rem 0.85rem;
+  border-top:1px solid var(--border);background:var(--bg2)
+}
+.chat-input-fake{
+  flex:1;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:0.4rem 0.75rem;font-size:0.75rem;
+  color:var(--text3);font-family:var(--sans);min-width:0
+}
+.chat-send{
+  width:28px;height:28px;border-radius:7px;background:var(--accent);
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
 .chat-send svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.proof-bar{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;padding:2rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg1)}
+/* ─── Proof Bar ──────────────────────────────────────────────── */
+.proof-bar{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(1rem,4vw,2.5rem);flex-wrap:wrap;
+  padding:clamp(1.25rem,3vw,2rem) clamp(1rem,4vw,2rem);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--bg1)
+}
 .proof-item{display:flex;align-items:center;gap:0.6rem}
-.proof-num{font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--text);letter-spacing:-0.03em}
-.proof-label{font-size:0.78rem;color:var(--text3);font-weight:300}
-.proof-div{width:1px;height:28px;background:var(--border2)}
+.proof-num{font-family:var(--mono);font-size:clamp(1.15rem,3vw,1.5rem);font-weight:500;color:var(--text);letter-spacing:-0.03em}
+.proof-label{font-size:clamp(0.7rem,1.5vw,0.78rem);color:var(--text3);font-weight:300;white-space:nowrap}
+.proof-div{width:1px;height:28px;background:var(--border2);flex-shrink:0}
+/* hide dividers if wrapped too tight */
+@media(max-width:400px){.proof-div{display:none}.proof-bar{gap:0.75rem}}
 
-section{padding:6rem 1.5rem}
+/* ─── Sections ───────────────────────────────────────────────── */
+section{padding:clamp(4rem,8vw,6rem) clamp(1rem,4vw,1.5rem)}
 .inner{max-width:1080px;margin:0 auto}
-.sect-tag{font-family:var(--mono);font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-light);margin-bottom:1rem}
-.sect-h{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;letter-spacing:-0.025em;line-height:1.15;margin-bottom:1rem}
-.sect-sub{font-size:1rem;font-weight:300;color:var(--text2);max-width:52ch;line-height:1.75}
+.sect-tag{
+  font-family:var(--mono);font-size:clamp(0.62rem,1.5vw,0.68rem);font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-light);margin-bottom:0.875rem
+}
+.sect-h{
+  font-family:var(--serif);font-size:clamp(1.75rem,4vw,3rem);
+  font-weight:400;letter-spacing:-0.025em;line-height:1.15;margin-bottom:0.875rem
+}
+.sect-sub{font-size:clamp(0.875rem,1.8vw,1rem);font-weight:300;color:var(--text2);max-width:52ch;line-height:1.75}
 
-.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3.5rem}
-.feat{background:var(--bg1);padding:2rem 1.75rem;transition:background 0.2s;cursor:default}
+/* ─── Feature Grid ───────────────────────────────────────────── */
+.feat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-top:3rem
+}
+.feat{background:var(--bg1);padding:clamp(1.25rem,3vw,2rem) clamp(1rem,2.5vw,1.75rem);transition:background 0.2s;cursor:default}
 .feat:hover{background:var(--bg2)}
-.feat-icon{font-size:1.5rem;margin-bottom:1.1rem;display:block}
-.feat h3{font-size:1rem;font-weight:600;letter-spacing:-0.015em;color:var(--text);margin-bottom:0.5rem}
-.feat p{font-size:0.85rem;color:var(--text2);line-height:1.7;font-weight:300}
-.feat-status{margin-top:1rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px}
+.feat-icon{font-size:1.4rem;margin-bottom:1rem;display:block}
+.feat h3{font-size:clamp(0.875rem,1.8vw,1rem);font-weight:600;letter-spacing:-0.015em;color:var(--text);margin-bottom:0.4rem}
+.feat p{font-size:clamp(0.78rem,1.5vw,0.85rem);color:var(--text2);line-height:1.7;font-weight:300}
+.feat-status{
+  margin-top:0.875rem;font-family:var(--mono);font-size:0.62rem;
+  letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px
+}
 .s-live{color:var(--emerald)}
 .s-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--emerald);display:inline-block}
+.s-soon{color:var(--amber)}
+.s-soon::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--amber);display:inline-block}
 
+/* ─── How Section ────────────────────────────────────────────── */
 .how-section{background:var(--bg1)}
-.how-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:3.5rem;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border)}
-.how-step{background:var(--bg1);padding:2rem 1.5rem;transition:background 0.2s}
+.how-flow{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));
+  gap:0;margin-top:3rem;
+  border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;background:var(--border)
+}
+.how-step{background:var(--bg1);padding:clamp(1.25rem,3vw,2rem) clamp(1rem,2.5vw,1.5rem);transition:background 0.2s}
 .how-step:hover{background:var(--bg2)}
-.how-n{font-family:var(--mono);font-size:0.65rem;font-weight:500;color:var(--text3);letter-spacing:0.1em;margin-bottom:1rem}
-.how-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:1rem}
-.how-step h3{font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:0.5rem;letter-spacing:-0.01em}
-.how-step p{font-size:0.82rem;color:var(--text2);line-height:1.65;font-weight:300}
+.how-n{font-family:var(--mono);font-size:0.65rem;font-weight:500;color:var(--text3);letter-spacing:0.1em;margin-bottom:0.875rem}
+.how-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:0.875rem;flex-shrink:0}
+.how-step h3{font-size:clamp(0.875rem,1.8vw,0.95rem);font-weight:600;color:var(--text);margin-bottom:0.4rem;letter-spacing:-0.01em}
+.how-step p{font-size:clamp(0.75rem,1.5vw,0.82rem);color:var(--text2);line-height:1.65;font-weight:300}
 
-.cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:3.5rem}
-@media(max-width:640px){.cases-grid{grid-template-columns:1fr}}
-.case-card{background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:border-color 0.25s,transform 0.2s}
+/* ─── Cases Grid ─────────────────────────────────────────────── */
+.cases-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:clamp(0.75rem,2vw,1.25rem);margin-top:3rem
+}
+.case-card{
+  background:var(--bg1);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:clamp(1rem,3vw,1.5rem);
+  transition:border-color 0.25s,transform 0.2s
+}
 .case-card:hover{border-color:var(--border3);transform:translateY(-3px)}
-.case-label{font-family:var(--mono);font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
-.case-msg{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;font-size:0.82rem;color:var(--text);font-weight:300;margin-bottom:0.6rem;font-family:var(--mono)}
+.case-label{
+  font-family:var(--mono);font-size:0.65rem;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:0.875rem
+}
+.case-msg{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:0.7rem 0.9rem;
+  font-size:clamp(0.73rem,1.5vw,0.82rem);color:var(--text);font-weight:300;margin-bottom:0.5rem;font-family:var(--mono)
+}
 .case-msg span{color:var(--text3)}
-.case-reply{background:var(--accent);border-radius:10px;padding:0.75rem 1rem;font-size:0.8rem;color:#fff;font-weight:300;line-height:1.55}
+.case-reply{
+  background:var(--accent);border-radius:10px;
+  padding:0.7rem 0.9rem;
+  font-size:clamp(0.73rem,1.5vw,0.8rem);color:#fff;font-weight:300;line-height:1.55
+}
 .case-reply b{font-weight:600}
 
-.final-cta{text-align:center;padding:8rem 1.5rem;position:relative;overflow:hidden;border-top:1px solid var(--border)}
-.final-cta-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(99,102,241,0.1) 0%,transparent 65%)}
-.final-cta h2{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;letter-spacing:-0.03em;margin-bottom:1.25rem;position:relative}
-.final-cta h2 em{font-style:italic;color:var(--accent-light)}
-.final-cta p{font-size:1rem;color:var(--text2);max-width:44ch;margin:0 auto 2.5rem;font-weight:300;position:relative;line-height:1.75}
-.final-cta .btn-p{position:relative;font-size:0.9rem;padding:0.95rem 2.25rem}
 
-footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--bg)}
+
+
+
+/* ─── FAQ ────────────────────────────────────────────────────── */
+.faq-list{margin-top:3rem;display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;max-width:720px}
+.faq-item{background:var(--bg1)}
+.faq-q{
+  width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:clamp(1rem,2.5vw,1.25rem) clamp(1rem,3vw,1.5rem);
+  font-family:var(--sans);font-size:clamp(0.82rem,1.8vw,0.92rem);font-weight:500;
+  color:var(--text);transition:background 0.15s
+}
+.faq-q:hover{background:var(--bg2)}
+.faq-arrow{
+  width:18px;height:18px;border-radius:50%;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform 0.25s,background 0.25s
+}
+.faq-arrow svg{width:9px;height:9px;fill:none;stroke:var(--text3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.2s}
+.faq-item.open .faq-arrow{transform:rotate(180deg);background:var(--accent);border-color:var(--accent)}
+.faq-item.open .faq-arrow svg{stroke:#fff}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.3s ease;
+  font-size:clamp(0.8rem,1.6vw,0.875rem);color:var(--text2);font-weight:300;line-height:1.75
+}
+.faq-a-inner{padding:0 clamp(1rem,3vw,1.5rem) clamp(0.875rem,2vw,1.1rem)}
+.faq-item.open .faq-a{max-height:300px}
+
+/* ─── CTA ────────────────────────────────────────────────────── */
+.final-cta{
+  text-align:center;padding:clamp(5rem,10vw,8rem) clamp(1rem,4vw,1.5rem);
+  position:relative;overflow:hidden;border-top:1px solid var(--border)
+}
+.final-cta-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(99,102,241,0.1) 0%,transparent 65%)
+}
+.final-cta h2{
+  font-family:var(--serif);font-size:clamp(2rem,6vw,4.5rem);
+  font-weight:400;letter-spacing:-0.03em;margin-bottom:1.25rem;position:relative
+}
+.final-cta h2 em{font-style:italic;color:var(--accent-light)}
+.final-cta p{
+  font-size:clamp(0.875rem,2vw,1rem);color:var(--text2);
+  max-width:44ch;margin:0 auto 2.5rem;font-weight:300;position:relative;line-height:1.75
+}
+.final-cta .btn-p{position:relative;font-size:clamp(0.8rem,2vw,0.9rem);padding:clamp(0.75rem,2vw,0.95rem) clamp(1.5rem,3vw,2.25rem)}
+
+/* ─── Footer ─────────────────────────────────────────────────── */
+footer{
+  padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,4vw,2.5rem);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--bg)
+}
 .footer-brand{font-family:var(--mono);font-size:0.8rem;font-weight:500;color:var(--text3)}
 .footer-brand b{color:var(--accent-light)}
-.footer-links{display:flex;gap:1.5rem;list-style:none}
+.footer-links{display:flex;gap:clamp(0.75rem,2vw,1.5rem);list-style:none;flex-wrap:wrap}
 .footer-links a{font-family:var(--mono);font-size:0.72rem;color:var(--text3);text-decoration:none;transition:color 0.2s}
 .footer-links a:hover{color:var(--text)}
 .footer-cr{font-size:0.72rem;color:var(--text3);font-family:var(--mono)}
+@media(max-width:560px){
+  footer{flex-direction:column;align-items:flex-start;gap:0.75rem}
+  .footer-links{gap:0.75rem}
+}
 
+/* ─── Animations ─────────────────────────────────────────────── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease}
 .reveal.in{opacity:1;transform:translateY(0)}
+
+/* ─── Focus / A11y ───────────────────────────────────────────── */
+:focus-visible{outline:2px solid var(--accent-light);outline-offset:3px;border-radius:4px}
+
+/* ─── Print ──────────────────────────────────────────────────── */
+@media print{
+  nav,.hero-bg,.hero-grid,.chat-glow,.final-cta-bg{display:none}
+  body{background:#fff;color:#000}
+}
 </style>
 </head>
 <body>
 
+<!-- ─── Navigation ─────────────────────────────────────────── -->
 <nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">AI</div>
+  <a href="#" class="nav-logo" aria-label="ARIA Home">
+    <div class="nav-logo-mark" aria-hidden="true">AI</div>
     <span class="nav-logo-text">ARIA</span>
   </a>
   <div class="nav-right">
     <a href="#features" class="nav-link">Features</a>
     <a href="#how" class="nav-link">How it works</a>
-    <a href="https://t.me/aria_username_bot" class="nav-btn">Try for free →</a>
+    <a href="#faq" class="nav-link">FAQ</a>
+    <a href="https://t.me/aria_username_bot" target="_blank" rel="noopener" class="nav-btn">Try free →</a>
   </div>
 </nav>
 
+<!-- ─── Hero ───────────────────────────────────────────────── -->
 <div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Your AI assistant, on Telegram</div>
+    <div class="hero-eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Your AI assistant, on Telegram</div>
     <h1 class="hero-h1">The assistant that<br/><em>runs your life</em><br/>for you.</h1>
     <p class="hero-p">Track expenses, manage job applications, stay briefed every morning — all by just sending a message. No new app. No learning curve.</p>
     <div class="hero-actions">
-      <a href="https://t.me/aria_username_bot" class="btn-p">Start free on Telegram</a>
+      <a href="https://t.me/aria_username_bot" target="_blank" rel="noopener" class="btn-p">Start free on Telegram</a>
       <a href="#how" class="btn-s">See how it works</a>
     </div>
-    <div class="chat-wrap">
-      <div class="chat-glow"></div>
+    <div class="chat-wrap" aria-label="ARIA chat preview" role="img">
+      <div class="chat-glow" aria-hidden="true"></div>
       <div class="chat-window">
         <div class="chat-topbar">
-          <div class="chat-avatar">A</div>
+          <div class="chat-avatar" aria-hidden="true">A</div>
           <div class="chat-info">
             <div class="chat-info-name">ARIA</div>
             <div class="chat-info-sub">● online</div>
@@ -170,89 +392,256 @@ footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;al
           <div class="bubble a"><b>Good morning!</b> 2 follow-ups due today. Spent <b>₹12,400 this month</b>. Top story: OpenAI announces GPT-5... ☀️</div>
         </div>
         <div class="chat-input-bar">
-          <div class="chat-input-fake">Message ARIA...</div>
-          <button class="chat-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <div class="chat-input-fake" aria-hidden="true">Message ARIA...</div>
+          <button class="chat-send" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="proof-bar">
-  <div class="proof-item"><span class="proof-num">5</span><span class="proof-label">AI-powered features</span></div>
-  <div class="proof-div"></div>
-  <div class="proof-item"><span class="proof-num">0</span><span class="proof-label">apps to install</span></div>
-  <div class="proof-div"></div>
-  <div class="proof-item"><span class="proof-num">24/7</span><span class="proof-label">always available</span></div>
-  <div class="proof-div"></div>
-  <div class="proof-item"><span class="proof-num">&lt;2s</span><span class="proof-label">average response</span></div>
+<!-- ─── Proof Bar ───────────────────────────────────────────── -->
+<div class="proof-bar" role="list" aria-label="Key stats">
+  <div class="proof-item" role="listitem"><span class="proof-num">5</span><span class="proof-label">AI-powered features</span></div>
+  <div class="proof-div" aria-hidden="true"></div>
+  <div class="proof-item" role="listitem"><span class="proof-num">0</span><span class="proof-label">apps to install</span></div>
+  <div class="proof-div" aria-hidden="true"></div>
+  <div class="proof-item" role="listitem"><span class="proof-num">24/7</span><span class="proof-label">always available</span></div>
+  <div class="proof-div" aria-hidden="true"></div>
+  <div class="proof-item" role="listitem"><span class="proof-num">&lt;2s</span><span class="proof-label">average response</span></div>
+  <div class="proof-div" aria-hidden="true"></div>
+  <div class="proof-item" role="listitem"><span class="proof-num">∞</span><span class="proof-label">free messages</span></div>
 </div>
 
+<!-- ─── Features ───────────────────────────────────────────── -->
 <section id="features">
   <div class="inner">
     <div class="sect-tag reveal">What ARIA can do</div>
     <h2 class="sect-h reveal">Five ways ARIA takes<br/>work off your plate.</h2>
     <p class="sect-sub reveal">Every feature works the same way — you say it, ARIA handles it.</p>
     <div class="feat-grid reveal">
-      <div class="feat"><span class="feat-icon">💬</span><h3>Smart AI Chat</h3><p>Ask anything. ARIA understands context, answers questions, drafts text, and reasons through problems like a brilliant personal assistant.</p><div class="feat-status s-live">Live</div></div>
-      <div class="feat"><span class="feat-icon">💸</span><h3>Expense Tracking</h3><p>Just describe what you spent. ARIA extracts the amount and category automatically and builds your financial picture over time.</p><div class="feat-status s-live">Live</div></div>
-      <div class="feat"><span class="feat-icon">📰</span><h3>Tech News Digest</h3><p>Curated tech headlines delivered every few hours — summarised by AI so you get the signal, not the noise.</p><div class="feat-status s-live">Live</div></div>
-      <div class="feat"><span class="feat-icon">🌅</span><h3>Morning Briefing</h3><p>Wake up to a personalised daily summary — your spending, pending tasks, key reminders, and top news, all in one message.</p><div class="feat-status s-live">Live</div></div>
-      <div class="feat"><span class="feat-icon">💼</span><h3>Job Application Tracker</h3><p>Log every application instantly. ARIA tracks status and automatically reminds you when it's time to follow up — no opportunity slips through.</p><div class="feat-status s-live">Live</div></div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">💬</span>
+        <h3>Smart AI Chat</h3>
+        <p>Ask anything. ARIA understands context, answers questions, drafts text, and reasons through problems like a brilliant personal assistant.</p>
+        <div class="feat-status s-live">Live</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">💸</span>
+        <h3>Expense Tracking</h3>
+        <p>Just describe what you spent. ARIA extracts the amount and category automatically and builds your financial picture over time.</p>
+        <div class="feat-status s-live">Live</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">📰</span>
+        <h3>Tech News Digest</h3>
+        <p>Curated tech headlines delivered every few hours — summarised by AI so you get the signal, not the noise.</p>
+        <div class="feat-status s-live">Live</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">🌅</span>
+        <h3>Morning Briefing</h3>
+        <p>Wake up to a personalised daily summary — your spending, pending tasks, key reminders, and top news, all in one message.</p>
+        <div class="feat-status s-live">Live</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">💼</span>
+        <h3>Job Application Tracker</h3>
+        <p>Log every application instantly. ARIA tracks status and automatically reminds you when it's time to follow up — no opportunity slips through.</p>
+        <div class="feat-status s-live">Live</div>
+      </div>
+      <div class="feat">
+        <span class="feat-icon" aria-hidden="true">🔔</span>
+        <h3>Smart Reminders</h3>
+        <p>Tell ARIA anything to remember. It will ping you at the right time — deadlines, events, follow-ups, anything.</p>
+        <div class="feat-status s-soon">Coming soon</div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ─── How It Works ────────────────────────────────────────── -->
 <section id="how" class="how-section">
   <div class="inner">
     <div class="sect-tag reveal">How it works</div>
     <h2 class="sect-h reveal">No learning curve.<br/>Just send a message.</h2>
     <p class="sect-sub reveal">ARIA lives inside Telegram, the messaging app you already use. No new interface to learn — it just works.</p>
     <div class="how-flow reveal">
-      <div class="how-step"><div class="how-n">Step 01</div><div class="how-icon" style="background:rgba(99,102,241,0.12)">💬</div><h3>Open Telegram</h3><p>Find ARIA in Telegram and start a chat. No signup, no password, no new app to download.</p></div>
-      <div class="how-step"><div class="how-n">Step 02</div><div class="how-icon" style="background:rgba(16,185,129,0.1)">✍️</div><h3>Talk naturally</h3><p>Just describe what happened — "spent ₹400 on groceries" or "applied to Google today". No commands needed.</p></div>
-      <div class="how-step"><div class="how-n">Step 03</div><div class="how-icon" style="background:rgba(245,158,11,0.1)">⚡</div><h3>ARIA understands</h3><p>Advanced AI extracts the right information and routes it to the right place — in under 2 seconds.</p></div>
-      <div class="how-step"><div class="how-n">Step 04</div><div class="how-icon" style="background:rgba(99,102,241,0.12)">✅</div><h3>It's handled</h3><p>Data is saved, reminders are set, ARIA confirms. Your life, organised automatically — forever.</p></div>
+      <div class="how-step">
+        <div class="how-n">Step 01</div>
+        <div class="how-icon" style="background:rgba(99,102,241,0.12)" aria-hidden="true">💬</div>
+        <h3>Open Telegram</h3>
+        <p>Find ARIA in Telegram and start a chat. No signup, no password, no new app to download.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-n">Step 02</div>
+        <div class="how-icon" style="background:rgba(16,185,129,0.1)" aria-hidden="true">✍️</div>
+        <h3>Talk naturally</h3>
+        <p>Just describe what happened — "spent ₹400 on groceries" or "applied to Google today". No commands needed.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-n">Step 03</div>
+        <div class="how-icon" style="background:rgba(245,158,11,0.1)" aria-hidden="true">⚡</div>
+        <h3>ARIA understands</h3>
+        <p>Advanced AI extracts the right information and routes it to the right place — in under 2 seconds.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-n">Step 04</div>
+        <div class="how-icon" style="background:rgba(99,102,241,0.12)" aria-hidden="true">✅</div>
+        <h3>It's handled</h3>
+        <p>Data is saved, reminders are set, ARIA confirms. Your life, organised automatically — forever.</p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ─── Real Examples ───────────────────────────────────────── -->
 <section id="examples">
   <div class="inner">
     <div class="sect-tag reveal">Real examples</div>
     <h2 class="sect-h reveal">What you can say<br/>to ARIA right now.</h2>
     <div class="cases-grid reveal">
-      <div class="case-card"><div class="case-label">Expense tracking</div><div class="case-msg"><span>You:</span> paid ₹1,200 for electricity bill</div><div class="case-reply">✓ <b>₹1,200 · Utilities</b> logged. Monthly bills total <b>₹3,450</b> so far.</div></div>
-      <div class="case-card"><div class="case-label">Job applications</div><div class="case-msg"><span>You:</span> applied to Atlassian SDE-2 today</div><div class="case-reply">📌 Tracked. I'll remind you to follow up with <b>Atlassian</b> on <b>May 10th</b>.</div></div>
-      <div class="case-card"><div class="case-label">Morning briefing</div><div class="case-msg"><span>You:</span> give me today's briefing</div><div class="case-reply">☀️ <b>3 follow-ups due today.</b> Spent <b>₹8,200</b> this week. Top story: OpenAI announces GPT-5...</div></div>
-      <div class="case-card"><div class="case-label">AI chat</div><div class="case-msg"><span>You:</span> draft a follow-up email for my Stripe interview</div><div class="case-reply">✉️ Here's a professional follow-up email for your <b>Stripe SDE-2</b> interview. Want me to tweak the tone?</div></div>
+      <div class="case-card">
+        <div class="case-label">Expense tracking</div>
+        <div class="case-msg"><span>You:</span> paid ₹1,200 for electricity bill</div>
+        <div class="case-reply">✓ <b>₹1,200 · Utilities</b> logged. Monthly bills total <b>₹3,450</b> so far.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-label">Job applications</div>
+        <div class="case-msg"><span>You:</span> applied to Atlassian SDE-2 today</div>
+        <div class="case-reply">📌 Tracked. I'll remind you to follow up with <b>Atlassian</b> on <b>May 10th</b>.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-label">Morning briefing</div>
+        <div class="case-msg"><span>You:</span> give me today's briefing</div>
+        <div class="case-reply">☀️ <b>3 follow-ups due today.</b> Spent <b>₹8,200</b> this week. Top story: OpenAI announces GPT-5...</div>
+      </div>
+      <div class="case-card">
+        <div class="case-label">AI chat</div>
+        <div class="case-msg"><span>You:</span> draft a follow-up email for my Stripe interview</div>
+        <div class="case-reply">✉️ Here's a professional follow-up email for your <b>Stripe SDE-2</b> interview. Want me to tweak the tone?</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="final-cta">
-  <div class="final-cta-bg"></div>
-  <h2>Stop managing things.<br/><em>Let ARIA manage them.</em></h2>
-  <p>Your AI assistant is already on Telegram, waiting. Free, forever.</p>
-  <a href="https://t.me/aria_username_bot" class="btn-p">Start for free on Telegram →</a>
+
+
+
+
+<!-- ─── FAQ (NEW) ───────────────────────────────────────────── -->
+<section id="faq" class="how-section">
+  <div class="inner">
+    <div class="sect-tag reveal">FAQ</div>
+    <h2 class="sect-h reveal">Common questions.</h2>
+    <div class="faq-list reveal" role="list">
+
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">
+          Do I need to install a new app?
+          <span class="faq-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a" role="region"><div class="faq-a-inner">No. ARIA lives entirely inside Telegram, which you likely already have. Just open the bot and start chatting — zero downloads, zero signups.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">
+          Is my financial data safe?
+          <span class="faq-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Yes. Your data is encrypted in transit and at rest. We do not sell your data to third parties, ever. You can request full deletion at any time by messaging ARIA "delete my data".</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">
+          What language does ARIA understand?
+          <span class="faq-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a" role="region"><div class="faq-a-inner">ARIA primarily understands English, with Hinglish support in progress. Support for Hindi, Tamil, Telugu and more regional languages is on the roadmap for 2026.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">
+          Is the free plan really unlimited?
+          <span class="faq-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Yes. All five core features — chat, expense tracking, job tracker, morning briefing, and news digest — are completely free with no message limits.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">
+          How does the morning briefing work?
+          <span class="faq-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Every morning at your preferred time, ARIA sends a single message with your weekly spending summary, any job follow-ups due, pending reminders, and the top tech stories from the last 24 hours.</div></div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
+<!-- ─── Final CTA ───────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="final-cta-bg" aria-hidden="true"></div>
+  <h2>Stop managing things.<br/><em>Let ARIA manage them.</em></h2>
+  <p>Your AI assistant is already on Telegram, waiting. Free, forever.</p>
+  <a href="https://t.me/aria_username_bot" target="_blank" rel="noopener" class="btn-p">Start for free on Telegram →</a>
+</section>
+
+<!-- ─── Footer ─────────────────────────────────────────────── -->
 <footer>
   <span class="footer-brand"><b>ARIA</b> — AI Life Assistant</span>
   <ul class="footer-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#how">How it works</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="mailto:hello@aria.ai">Contact</a></li>
     <li><a href="#">Privacy</a></li>
   </ul>
   <span class="footer-cr">© 2026 ARIA. All rights reserved.</span>
 </footer>
 
+<!-- ─── Scripts ─────────────────────────────────────────────── -->
 <script>
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})
-},{threshold:0.12});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item.open').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// Smooth nav link active state
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => {
+        l.style.color = l.getAttribute('href') === '#' + e.target.id ? 'var(--text)' : '';
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => io.observe(s));
 </script>
 </body>
 </html>
